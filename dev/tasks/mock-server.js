@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 gulp.task('browser-sync', function () {
     browserSync({
         server: {
-            baseDir: "./app"
+            baseDir: "."
         }
     });
 });
@@ -50,5 +50,5 @@ gulp.task('mock-server', ['browser-sync', 'less'], function () {
         gulp.start('less');
     });
 
-    gulp.watch(["./app/**/*.html", "./app/**/*.js", "./app/**/*.css"], ['bs-reload']);
+    gulp.watch(["./*.html","./app/**/*.html", "./app/**/*.js", "./app/**/*.css"], ['bs-reload']);
 });

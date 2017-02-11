@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html class="mdc-typography">
+
+<head>
+  <title>Material Components for the web</title>
+  <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
+  <!-- build:js -->
+  <!-- bower:js -->
+  <script src="app/components/jquery/dist/jquery.js"></script>
+  <script src="app/components/sightglass/index.js"></script>
+  <script src="app/components/rivets/dist/rivets.js"></script>
+  <script src="app/components/sightglass/index.js"></script>
+
+  <!-- endbower -->
+  <!-- inject:js -->
+  <!-- endinject -->
+  <!-- endbuild -->
+
+  <script src="app/js/vendor/jquery.kontrol.js"></script>
+  <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+</head>
+
+<body>
+  <main id="calculator">
+    <div id="page-title" class="bound">
+      <h1>{ testText }</h1>
+    </div>
+    
+
+    <h1 class="mdc-typography--display1">UI Controls</h1>
+    <input type="text" rv-value="numVal" class="dial" max="45" min="13">
+    <input type="range" rv-value="numVal">
+    <input type="number"rv-value="numVal">
+    <input type="checkbox" id="myChekbox"><label for="myChekbox"></label>
+    <h2>{ calculatedValue }</h2>
+  </main>
+
+
+
+
+
+<form>
+<input type="range" name="foo" min="0" max="100">
+<output for="foo" onforminput="value = foo.valueAsNumber;"></output>
+</form>
+
+<form>
+<input type="range" name="foo" min="0" max="100" style="width: 300px;">
+<output for="foo" onforminput="value = foo.valueAsNumber;"></output>
+</form>
+
+
+
+  <script>
+
+  
+    var data = {
+      testText: 'Welcome to the Candy Shop',
+      numVal: 33,
+      calculatedValue:0
+    };
+
+
+    rivets.bind(
+      document.querySelector('#calculator'), // bind to the element with id "candy-shop"
+      data
+      );
+
+
+    function Calculator() {
+
+      var _this = this;
+
+      this.init = function () {
+        $(".dial").knob({
+          'release': function (v) {
+            // console.log('dial released and value is ', v)
+          },
+          change: function (v) {
+            console.log('dial value changed to', v);
+            data.numVal = v;
+            data.calculatedValue = 'Cal val = ' + v
+            // console.log(data.dial.value)
+          }
+        })
+      }
+
+      this.update = function () {
+        console.log(this)
+        data.title = v;
+        
+      }
+    }
+    var calculator = new Calculator();
+    calculator.init()
+  </script>
+</body>
+
+</html>

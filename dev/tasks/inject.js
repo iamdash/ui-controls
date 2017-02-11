@@ -7,18 +7,18 @@ var gulp = require('gulp'),
 
 gulp.task('wiredep', function () {
 
-    return gulp.src('./app/**/*.html')
+    return gulp.src('./*.html')
         .pipe(wiredep({
             exclude: [],
             ignorePath: ['node_modules']
         }))
-        .pipe(gulp.dest('app'));
+        .pipe(gulp.dest('./'));
 });
 
 
 gulp.task('usemin', function () {
 
-    return gulp.src('./app/**/*.html')
+    return gulp.src('./*.html')
         .pipe(usemin())
-        .pipe(gulp.dest('app'));
+        .pipe(gulp.dest('./'));
 });

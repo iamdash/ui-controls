@@ -19,7 +19,7 @@ gulp.task('browser-sync', function () {
 //Compile SASS & auto-inject into browsers
 gulp.task('sass', function () {
 
-    return gulp.src(['./dev/sass/materialize.scss'])
+    return gulp.src(['./dev/sass/**/*.scss'])
         .pipe(sass({
             errLogToConsole: true,
             style: 'compressed'
@@ -46,8 +46,8 @@ gulp.task('bs-reload', function () {
 
 gulp.task('mock-server', ['browser-sync', 'less'], function () {
 
-    watch("./dev/**/*.less", function () {
-        gulp.start('less');
+    watch("./dev/**/*.scss", function () {
+        gulp.start('sass');
     });
 
     gulp.watch(["./*.html","./app/**/*.html", "./app/**/*.js", "./app/**/*.css"], ['bs-reload']);

@@ -1,0 +1,89 @@
+// https://jsfiddle.net/soundar24/1usqdvc9/1/
+// https://jsfiddle.net/soundar24/1usqdvc9/2/
+
+var fn1 = $.fn.roundSlider.prototype._setProperties;
+$.fn.roundSlider.prototype._setProperties = function() {
+    fn1.apply(this);
+
+    var o = this.options,
+        r = o.radius,
+        d = r * 2,
+        r1 = r - (o.width / 2),
+        svgNS = "http://www.w3.org/2000/svg";
+    this._circum = Math.PI * (r1 * 2);
+    this.$circle = this._$circle = $(document.createElementNS(svgNS, 'circle'));
+    this.$circle.attr({
+        "fill": "transparent",
+        "class": "rs-transition",
+        "cx": r,
+        "cy": r,
+        "r": r1,
+        "stroke-width": o.width - this._border(false),
+        "stroke-dasharray": this._circum
+    }).css({
+        "transform-origin": "50% 50%",
+        "transform": "rotate(" + (o.startAngle + 180) + "deg)"
+    });
+    var $svg = $(document.createElementNS(svgNS, "svg"));
+    $svg.attr({ "height": d, "width": d }).append(this.$circle);
+    this.innerContainer.append($svg);
+
+    // this.innerContainer.append('<div class="rs-overlay rs-transition rs-bg-color" style="transform: rotate(590deg);"></div>')
+
+}
+
+var fn2 = $.fn.roundSlider.prototype._changeSliderValue;
+$.fn.roundSlider.prototype._changeSliderValue = function(val, deg) {
+    fn2.apply(this, arguments);
+    deg = deg - this.options.startAngle;
+
+    if (this._rangeSlider) {
+        this.$svg_box.rsRotate(this._handle1.angle + 180);
+        deg = this._handle2.angle - this._handle1.angle;
+    }
+    var pct = (1 - (deg / 360)) * this._circum;
+    this.$circle.css({ strokeDashoffset: pct });
+}
+$.fn.roundSlider.prototype.defaults.create = function() {
+    var o = this.options;
+
+    var counter = -1;
+    var allValues = Array.apply(null, { length: o.max }).map(Number.call, Number);
+    // var numItemsArr = o.max;
+    // console.log(Array.apply(null, { length: numItemsArr }).map(Number.call, Number))
+
+    // console.log(foo)
+
+    var startAngle = o.startAngle;
+    var endAngle = parseInt(o.endAngle);
+    var startAnglePos = 360 - startAngle;
+
+    for (var i = 0; i <= o.max; i += 1) {
+        // console.log(startAngle, endAngle)
+        var angle = Math.floor(i / o.max * 360) - startAnglePos;
+
+        console.log(-startAnglePos, endAngle)
+
+        var numberTag = this._addSeperator(angle, "rs-custom");
+        var number = numberTag.children();
+        if (!Number.isInteger(i)) {
+            number.clone().css({ "width": (o.width + this._border()) / o.width, "margin-top": this._border(true) / -2, "margin-left": "0px", "color": "white" }).appendTo(numberTag);
+        }
+        // console.log(angle, angle + startAnglePos, startAnglePos)
+        if (Number.isInteger(i) && (angle + startAnglePos) < endAngle) {
+            number.clone().css({ "width": (o.width), "margin-top": this._border(true) / -2, "margin-left": "0px" }).appendTo(numberTag);
+        }
+    }
+    // Appending numbers
+    // for (var i = 0; i <= o.max; i += 1) {
+    //     var angle = i / o.max * 360;
+    //     var numberTag = this._addSeperator(angle, "rs-custom");
+    //     var number = numberTag.children();
+    //     if (i % 5 === 0) {
+    //         counter++;
+    //         val = allValues[counter];
+    //         number.removeClass().addClass("rs-number").html(Math.round(angle)).rsRotate(-angle);
+    //     }
+    //     if (i == o.min) number.css("margin-left", "-5px");
+    // }
+}

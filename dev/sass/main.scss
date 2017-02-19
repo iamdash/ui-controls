@@ -1,76 +1,214 @@
 // @import "material-components-web/material-components-web";
-
-output { 
-  position: absolute;
-  background-image: linear-gradient(top, #444444, #999999);
-  width: 40px; 
-  height: 30px; 
-  text-align: center; 
-  color: white; 
-  border-radius: 10px; 
-  display: inline-block; 
-  font: bold 15px/30px Georgia;
-  bottom: 175%;
-  left: 0;
-  margin-left: -1%;
+output {
+    position: absolute;
+    background-image: linear-gradient(top, #444444, #999999);
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    color: white;
+    border-radius: 10px;
+    display: inline-block;
+    font: bold 15px/30px Georgia;
+    bottom: 175%;
+    left: 0;
+    margin-left: -1%;
 }
-output:after { 
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 10px solid #999999;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  margin-top: -1px;
+
+output:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 10px solid #999999;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    margin-top: -1px;
 }
 
 .demo-body {
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 
-    /* A quick and simple toolbar, while we're waiting for mdc-toolbar. */
+
+/* A quick and simple toolbar, while we're waiting for mdc-toolbar. */
+
+.demo-toolbar {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
     .demo-toolbar {
-      width: 100%;
-      height: 56px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding: 0 16px;
-      box-sizing: border-box;
-    }
-    @media (min-width: 600px) {
-      .demo-toolbar {
         height: 64px;
-      }
     }
+}
 
-    /* A simple menu button. */
-    .demo-menu {
-      background: none;
-      border: none;
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      margin: 0;
-      color: #FFF;
-      box-sizing: border-box;
+
+/* A simple menu button. */
+
+.demo-menu {
+    background: none;
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    color: #FFF;
+    box-sizing: border-box;
+}
+
+.demo-main {
+    padding-left: 16px;
+}
+
+
+/** CALCULATOR : START**/
+
+// #calculator {
+//     text-align: center
+// }
+
+/** CALCULATOR : END**/
+
+
+/** ROUDN SLIDER: **/
+
+.calculator-dial-wrap {
+    // background: red;
+    height: 400px;
+    width: 400px;
+    .calculator-dial {
+        &.rs-control {
+            // height: 100%!important;
+            // width: 100%!important;
+        }
     }
+}
 
-    .demo-main {
-      padding-left: 16px;
+.rs-control {
+    // transform: rotate(-5deg);
+    // .clip-circle {
+    background: #fff;
+    clip-path: circle(200px at center);
+    /* OLD VALUE example: circle(245px, 140px, 50px); */
+    /* Yep, even the new clip-path has deprecated stuff. */
+    // }
+}
+
+.rs-control .rs-range-color {
+    background: transparent;
+}
+
+.rs-handle {
+    box-sizing: border-box;
+    background: #5f25b2;
+    // margin: 0 0px 0px 1px!important;
+}
+
+body,
+.rs-inner {
+    // background: #5D5766;
+}
+
+#slider {
+    background: red;
+    position: absolute;
+    margin-top: 53px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+span.rs-number {
+    position: absolute;
+    top: -10px;
+    left: 17px;
+    font-size: 15px;
+    color: #e1e1e1;
+    font-weight: 600;
+}
+
+.rs-border {
+    // border-color: white;
+    &.rs-outer,
+    &.rs-inner {
+        border: none;
     }
+}
 
+.rs-path {
+    background: #5D5766;
+}
 
-    /** CALCULATOR : START**/
+.rs-control .rs-path-color,
+.rs-control .rs-bg-color {
+    background-color: #fff;
+}
 
-    #calculator{
-      text-align: center
+.rs-control .rs-bg-color {
+    // background-color: red;
+}
+
+.rs-control .rs-overlay {
+    background: #eee;
+    z-index: 6;
+    // display: none
+}
+
+.rs-bar.rs-custom {
+    border-color: red;
+    // pointer-events: none;
+    z-index: 5;
+}
+
+.rs-bar.rs-end,
+.rs-bar.rs-start {
+    // display: none;
+    span {
+        border-color: red;
+        border-width: 20px;
+        border: none;
     }
+}
 
-    /** CALCULATOR : END**/
+.rs-control svg {
+    left: 0;
+    // pointer-events: none;
+    position: absolute;
+    z-index: 6;
+}
+
+.rs-control circle {
+    /* mention the range color here */
+    stroke: #5f25b2;
+}
+
+.rs-tooltip {
+    z-index: 20;
+}
+
+.rs-tooltip-text {
+    font-size: 30px;
+}
+
+.rs-bar .rs-seperator {
+    // pointer-events: none;
+    // border-bottom: 30px solid white;
+    // border-top: 20px solid white;
+    // width: 30px;
+}
+
+.rs-number {
+    color: black!important;
+}

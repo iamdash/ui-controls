@@ -2,216 +2,67 @@
 <html class="mdc-typography">
 
 <head>
-  <title>UI Controls</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="app/css/main.css">
-  <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
-  <!-- build:js -->
-  <!-- bower:js -->
-  <script src="app/components/jquery/dist/jquery.js"></script>
-  <script src="app/components/sightglass/index.js"></script>
-  <script src="app/components/rivets/dist/rivets.js"></script>
+    <title>UI Controls</title>
+    <!--<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">-->
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
 
-  <script src="app/components/underscore/underscore.js"></script>
-  <!-- endbower -->
-  <!-- inject:js -->
-  <!-- endinject -->
-  <!-- endbuild -->
+    <!--<link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">-->
 
-  <script src="app/js/vendor/jquery.kontrol.js"></script>
-  <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <link rel="stylesheet" href="app/components/round-slider/dist/roundslider.min.css" />
+    <link rel="stylesheet" href="app/css/main.css">
+    <!-- inject:css -->
+    <!-- endinject -->
+
+    <!-- build:js -->
+    <!-- bower:js -->
+    <script src="app/components/jquery/jquery.js"></script>
+    <script src="app/components/sightglass/index.js"></script>
+    <script src="app/components/rivets/dist/rivets.js"></script>
+
+    <script src="app/components/underscore/underscore.js"></script>
+
+    <script src="app/components/round-slider/dist/roundslider.min.js"></script>
+    <script src="app/js/lib/round-slider.extensions.js"></script>
+
+    <!-- endbower -->
+    <!-- inject:js -->
+    <!-- endinject -->
+    <!-- endbuild -->
+
+    <script src="app/js/lib/calculator.js"></script>
 
 </head>
 
 <body class="mdc-typography demo-body">
 
-  <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">
-    <button class="demo-menu material-icons">menu</button>
-  </div>
+    <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">
+        <button class="demo-menu material-icons">menu</button>
+    </div>
 
-  <aside class="mdc-temporary-drawer">
-    <nav class="mdc-temporary-drawer__drawer">
-      <header class="mdc-temporary-drawer__header">
-        <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
-          Header here
-        </div>
-      </header>
-      <nav class="mdc-temporary-drawer__content mdc-list-group">
-        <div id="icon-with-text-demo" class="mdc-list">
-          <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
-            <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
-          </a>
-        </div>
 
-        <hr class="mdc-list-divider">
+    <main class="demo-main">
 
-        <div class="mdc-list">
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
-          </a>
-        </div>
-      </nav>
-    </nav>
-  </aside>
-  <main class="demo-main">
-    <h1 class="mdc-typography--display1">Temporary Drawer</h1>
-    <p class="mdc-typography--body1">Click the menu icon above to open.</p>
+        <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-2-tablet"></div>
+            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8 mdc-layout-grid__cell--span-8-tablet">
 
-    <div class="mdc-layout-grid">
-      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-2-tablet"></div>
-      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8 mdc-layout-grid__cell--span-8-tablet">
+                <div id="calculator">
 
-        <div id="calculator">
+                    <div class="calculator-dial-wrap">
+                        <div class="calculator-dial"></div>
+                    </div>
 
-          <div id="page-title" class="bound">
-            <h1 class="mdc-typography--display1">Ui controls: { testText }</h1>
-          </div>
 
-          <input type="text" rv-value="numVal" class="dial" max="45" min="13">
-          <input type="range" rv-value="numVal" id="range-slider" min=1 max="100">
-          <input type="number" rv-value="numVal" id="num-input">
-          <h2> { calculatedValue }</h2>
-        </div>
-  </main>
-
-  <form>
-    <input type="range" name="foo" min="0" max="100">
-    <output for="foo" onforminput="value = foo.valueAsNumber;"></output>
-  </form>
-
-  <form>
-    <input type="range" name="foo" min="0" max="100" style="width: 300px;">
-    <output for="foo" onforminput="value = foo.valueAsNumber;"></output>
-  </form>
-
-  </div>
-  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-4-phone"></div>
-  </div>
-
-  <script>
-                                   var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
-                                   var drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
-                                   document.querySelector('.demo-menu').addEventListener('click', function () {
-                                     drawer.open = true;
-                                   });
-  </script>
+                    <!--<input type="text" rv-value="numVal" class="dial" max="45" min="13">
+                    <input type="range" rv-value="numVal" id="range-slider" min=1 max="100">
+                    <input type="number" rv-value="numVal" id="num-input">
+                    <h2> { calculatedValue }</h2>-->
+                </div>
+    </main>
 
 
 
 
-
-
-
-    <script>
-      var data = {
-        testText: 'UI Controls',
-        numVal: 33,
-        calculatedValue: 0
-      };
-
-      rivets.bind(
-        document.querySelector('#calculator'), // bind to the element with id "candy-shop"
-        data
-      );
-
-
-      function Calculator() {
-
-        var _this = this;
-        $dial = $('.dial');
-
-        this.mouseIsDown = false;
-        this.currVal = data.numVal;
-        this.prevVal = data.numVal;
-
-        this.init = function () {
-
-          _this.initSliders();
-          _this.initNumInputs();
-
-          $dial.knob({
-            displayPrevious: true,
-            release: function (v) {
-            },
-            start: function (v) {
-            },
-            change: function (v) {
-              _this.update(v, true);
-            }
-          })
-
-
-          $(document).mousedown(function () {
-            _this.mouseIsDown = true;
-          }).mouseup(function () {
-            _this.mouseIsDown = false;
-          });
-        }
-
-        this.update = function (v, shouldAnimate) {
-
-          if (shouldAnimate) {
-
-            if (!this.mouseIsDown) {
-              $({ animatedVal: _this.prevVal }).animate({ animatedVal: v }, {
-                duration: 150,
-                easing: "swing",
-                step: function () {
-                  $dial.val(Math.ceil(this.animatedVal)).trigger("change");
-                }, complete: function () {
-                  _this.prevVal = v;
-                }
-              });
-            } else {
-              _this.prevVal = v;
-            }
-          } else {
-            $dial.val(v).trigger('change');
-            _this.prevVal = v;
-          }
-        }
-
-        this.initSliders = function () {
-          var slider = document.getElementById('range-slider');
-          slider.onmousedown = function (e) {
-            _this.prevVal = slider.value;
-            _this.update(slider.value, true);
-          }
-          slider.onchange = function (e) {
-            _this.update(slider.value, true);
-          }
-        }
-
-        this.initNumInputs = function () {
-          var input = document.getElementById('num-input');
-          input.onfocus = function () {
-            _this.prevVal = input.value;
-          }
-
-          input.onkeyup = _.debounce(function (e) {
-            _this.update(input.value, true);
-          }, 500);
-        }
-      }
-      var calculator = new Calculator();
-      calculator.init()
-    </script>
 </body>
 
 </html>

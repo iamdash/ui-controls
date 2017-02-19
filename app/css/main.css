@@ -59,7 +59,80 @@ output:after {
   padding-left: 16px; }
 
 /** CALCULATOR : START**/
-#calculator {
-  text-align: center; }
-
 /** CALCULATOR : END**/
+/** ROUDN SLIDER: **/
+.calculator-dial-wrap {
+  height: 400px;
+  width: 400px; }
+
+.rs-control {
+  background: #fff;
+  clip-path: circle(200px at center);
+  /* OLD VALUE example: circle(245px, 140px, 50px); */
+  /* Yep, even the new clip-path has deprecated stuff. */ }
+
+.rs-control .rs-range-color {
+  background: transparent; }
+
+.rs-handle {
+  box-sizing: border-box;
+  background: #5f25b2; }
+
+#slider {
+  background: red;
+  position: absolute;
+  margin-top: 53px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 3; }
+
+span.rs-number {
+  position: absolute;
+  top: -10px;
+  left: 17px;
+  font-size: 15px;
+  color: #e1e1e1;
+  font-weight: 600; }
+
+.rs-border.rs-outer, .rs-border.rs-inner {
+  border: none; }
+
+.rs-path {
+  background: #5D5766; }
+
+.rs-control .rs-path-color,
+.rs-control .rs-bg-color {
+  background-color: #fff; }
+
+.rs-control .rs-overlay {
+  background: #eee;
+  z-index: 6; }
+
+.rs-bar.rs-custom {
+  border-color: red;
+  z-index: 5; }
+
+.rs-bar.rs-end span,
+.rs-bar.rs-start span {
+  border-color: red;
+  border-width: 20px;
+  border: none; }
+
+.rs-control svg {
+  left: 0;
+  position: absolute;
+  z-index: 6; }
+
+.rs-control circle {
+  /* mention the range color here */
+  stroke: #5f25b2; }
+
+.rs-tooltip {
+  z-index: 20; }
+
+.rs-tooltip-text {
+  font-size: 30px; }
+
+.rs-number {
+  color: black !important; }

@@ -26,7 +26,9 @@ $.fn.roundSlider.prototype._setProperties = function() {
     });
     var $svg = $(document.createElementNS(svgNS, "svg"));
     $svg.attr({ "height": d, "width": d }).append(this.$circle);
-    this.innerContainer.append($svg);
+    // this.innerContainer.append($svg);
+
+
 
     // this.innerContainer.append('<div class="rs-overlay rs-transition rs-bg-color" style="transform: rotate(590deg);"></div>')
 
@@ -57,33 +59,49 @@ $.fn.roundSlider.prototype.defaults.create = function() {
     var startAngle = o.startAngle;
     var endAngle = parseInt(o.endAngle);
     var startAnglePos = 360 - startAngle;
+    var shapeContainer = document.createElement('ul');
+    shapeContainer.setAttribute('class', 'circle-container')
+    this.innerContainer.append(shapeContainer)
+    var item = document.createElement('li');
+
+    var innerCircle = document.createElement('div');
+    innerCircle.setAttribute('class', 'inner-circle-clip')
+    this.innerContainer.append(innerCircle)
+
+    // $(this).append($shapeContainer)
 
     for (var i = 0; i <= o.max; i += 1) {
         // console.log(startAngle, endAngle)
         var angle = Math.floor(i / o.max * 360) - startAnglePos;
 
-        console.log(-startAnglePos, endAngle)
 
         var numberTag = this._addSeperator(angle, "rs-custom");
         var number = numberTag.children();
         if (!Number.isInteger(i)) {
             number.clone().css({ "width": (o.width + this._border()) / o.width, "margin-top": this._border(true) / -2, "margin-left": "0px", "color": "white" }).appendTo(numberTag);
+
         }
+
+        item = document.createElement('li');
+        item.setAttribute('class', 'item');
+        shapeContainer.append(item);
         // console.log(angle, angle + startAnglePos, startAnglePos)
         if (Number.isInteger(i) && (angle + startAnglePos) < endAngle) {
-            number.clone().css({ "width": (o.width), "margin-top": this._border(true) / -2, "margin-left": "0px" }).appendTo(numberTag);
+            // number.clone().css({ "width": (o.width), "margin-top": this._border(true) / -2, "margin-left": "0px" }).appendTo(numberTag);
+
         }
     }
-    // Appending numbers
+    // // Appending numbers
     // for (var i = 0; i <= o.max; i += 1) {
     //     var angle = i / o.max * 360;
     //     var numberTag = this._addSeperator(angle, "rs-custom");
     //     var number = numberTag.children();
-    //     if (i % 5 === 0) {
-    //         counter++;
-    //         val = allValues[counter];
-    //         number.removeClass().addClass("rs-number").html(Math.round(angle)).rsRotate(-angle);
-    //     }
+    //     // if (i % 5 === 0) {
+    //     counter++;
+    //     val = allValues[counter];
+    //     number.removeClass().addClass("rs-number").html('<div class="item"></div>').rsRotate(-angle);
+    //     // }
+    //     number.append('hi')
     //     if (i == o.min) number.css("margin-left", "-5px");
     // }
 }

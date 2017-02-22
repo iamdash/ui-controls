@@ -24,9 +24,9 @@
                     radius: 200,
                     //sliderType: "range",
                     circleShape: "custom-quater",
-                    value: 10,
+                    value: 1,
                     min: 1,
-                    max: 100,
+                    max: 12,
                     step: 1,
                     startAngle: '-40',
                     endAngle: '+260',
@@ -38,6 +38,19 @@
                     }
 
                 });
+                // $('.calculator-dial').roundSlider({
+                //     width: 50,
+                //     value: "1",
+                //     radius: "200",
+                //     min: 1,
+                //     max: 14,
+                //     sliderType: "range",
+                //     showTooltip: false,
+                //     handleShape: 'square',
+                //     step: 1,
+                //     startAngle: '-40',
+                //     endAngle: '+260',
+                // })
             }
 
         }

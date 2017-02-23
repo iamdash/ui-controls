@@ -20,7 +20,7 @@
 
             this.init = function() {
                 this.dials.roundSlider({
-                    width: 50,
+                    width: 80,
                     radius: 200,
                     //sliderType: "range",
                     circleShape: "custom-quater",
@@ -34,7 +34,7 @@
                     handleShape: "square",
                     // handleSize: "-10",
                     change: function(dialData) {
-                        console.log(dialData)
+                        // console.log(dialData)
                     }
 
                 });

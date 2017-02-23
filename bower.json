@@ -19,6 +19,8 @@
     "sightglass": "^0.2.6",
     "jquery": "~2.0.0",
     "underscore": "^1.8.3",
-    "round-slider": "*"
+    "round-slider": "*",
+    "chart.js": "^2.5.0",
+    "d3": "^4.6.0"
   }
 }

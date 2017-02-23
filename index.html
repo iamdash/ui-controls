@@ -15,16 +15,13 @@
 
     <!-- build:js -->
     <!-- bower:js -->
-    <script src="app/components/jquery/jquery.js"></script>
     <script src="app/components/sightglass/index.js"></script>
     <script src="app/components/rivets/dist/rivets.js"></script>
-
+    <script src="app/components/jquery/jquery.js"></script>
     <script src="app/components/underscore/underscore.js"></script>
-
     <script src="app/components/round-slider/dist/roundslider.min.js"></script>
-    <script src="app/js/lib/round-slider.extensions.js"></script>
     <script src="app/components/chart.js/dist/Chart.js"></script>
-
+    <script src="app/components/d3/d3.js"></script>
     <!-- endbower -->
     <!-- inject:js -->
     <!-- endinject -->
@@ -43,6 +40,8 @@
 
     <main class="demo-main">
 
+        <div id="chart"></div>
+
         <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-2-tablet"></div>
             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8 mdc-layout-grid__cell--span-8-tablet">
@@ -60,45 +59,96 @@
                     <input type="number" rv-value="numVal" id="num-input">
                     <h2> { calculatedValue }</h2>-->
 
-                    <canvas id="myChart" width="400" height="400"></canvas>
+                    <!--<canvas id="myChart" width="400" height="400"></canvas>-->
                 </div>
     </main>
 
 
 
     <script>
-        // var data = {
-        //     labels: [],
-        //     datasets: [{
-        //         data: [35, 35, 35, 35, 35, 35, 35],
-        //         backgroundColor: [
+        (function(d3) {
 
-        //         ],
-        //         hoverBackgroundColor: [
-        //             "#FF6384",
-        //             "#36A2EB",
-        //             "#FFCE56"
-        //         ]
-        //     }]
-        // };
+            var toggleColor = (function() {
+                var currentColor = "grey";
 
-        // var options = {
-        //     onClick: function(e, data) {
-        //         console.log('clicked');
-        //         console.log(data)
-        //     },
-        //     cutoutPercentage: 80,
-        //     rotation: 1 * Math.PI,
-        //     circumference: 1 * Math.PI * 240 / 180
-        // }
+                return function() {
 
-        // var ctx = document.getElementById("myChart");
-        // // And for a doughnut chart
-        // var myDoughnutChart = new Chart(ctx, {
-        //     type: 'doughnut',
-        //     data: data,
-        //     options: options
-        // });
+                    currentColor = currentColor == "grey" ? "magenta" : "grey";
+                    d3.select(this).style("fill", currentColor);
+                }
+            })();
+            setTimeout(function() {
+                var range = 52;
+                var size = 240 / 12
+                var dataset = [];
+                for (var i = 0; i < range; i++) {
+                    dataset.push({
+                        label: 'grey',
+                        count: size,
+                        itemNumber: i + 1
+                    });
+                    if (i < range - 1) {
+                        dataset.push({
+                            label: 'white',
+                            count: size / 2,
+                            isSegmentGap: true
+                        })
+                    }
+
+                }
+
+
+                var width = 395;
+                var height = 395;
+                var radius = Math.min(width, height) / 2;
+                var donutWidth = 75; // NEW
+                var color = d3.scaleOrdinal(d3.schemeCategory20b);
+                var svg = d3.select('.rs-inner-container')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('id', 'circle-segments')
+                    .append('g')
+                    .attr('transform', 'translate(' + (width / 2) +
+                        ',' + (height / 2) + ')');
+                var arc = d3.arc()
+                    .innerRadius(radius - donutWidth) // UPDATED
+                    .outerRadius(radius);
+
+
+                var startAngle = -130;
+                var endAngle = startAngle + 260;
+
+                var pie = d3.pie()
+                    .value(function(d) {
+                        return d.count;
+                    })
+                    .startAngle(startAngle * (Math.PI / 180))
+                    .endAngle(endAngle * (Math.PI / 180))
+                    .sort(null);
+                var path = svg.selectAll('path')
+                    .data(pie(dataset))
+                    .enter()
+                    .append('path')
+                    .attr("data-item-number", function(d) {
+
+                        return d.data.itemNumber;
+                    })
+                    .attr('d', arc)
+                    .attr('class', 'pie-segment')
+                    .attr('fill', function(d, i) {
+                        return d.data.label;
+                    }).on('click', toggleColor);
+
+                // $(".pie-segment").on("click", function(e) {
+                //     var $clicked = $(e.currentTarget)
+                //     console.log($clicked.data())
+                // });
+            }, 0)
+
+            'use strict';
+
+        })(window.d3);
     </script>
 </body>
 

@@ -15,9 +15,10 @@
 
     <!-- build:js -->
     <!-- bower:js -->
+    <script src="app/components/jquery/jquery.js"></script>
     <script src="app/components/sightglass/index.js"></script>
     <script src="app/components/rivets/dist/rivets.js"></script>
-    <script src="app/components/jquery/jquery.js"></script>
+
     <script src="app/components/underscore/underscore.js"></script>
     <script src="app/components/round-slider/dist/roundslider.min.js"></script>
     <script src="app/components/chart.js/dist/Chart.js"></script>
@@ -27,126 +28,183 @@
     <!-- endinject -->
     <!-- endbuild -->
 
-    <script src="app/js/lib/calculator.js"></script>
+    <!--<script src="app/js/lib/calculator.js"></script>-->
 
 </head>
 
 <body class="mdc-typography demo-body">
 
-    <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">
-        <button class="demo-menu material-icons">menu</button>
-    </div>
-
 
     <main class="demo-main">
+        <div id="calculator">
+            <div id="chart"></div>
+            <input type=text rv-value="currValue" />
+        </div>
 
-        <div id="chart"></div>
-
-        <div class="mdc-layout-grid">
-            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-2-tablet"></div>
-            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8 mdc-layout-grid__cell--span-8-tablet">
-
-
-                <div id="calculator">
-
-                    <div class="calculator-dial-wrap">
-                        <div class="calculator-dial"></div>
-                    </div>
-
-
-                    <!--<input type="text" rv-value="numVal" class="dial" max="45" min="13">
-                    <input type="range" rv-value="numVal" id="range-slider" min=1 max="100">
-                    <input type="number" rv-value="numVal" id="num-input">
-                    <h2> { calculatedValue }</h2>-->
-
-                    <!--<canvas id="myChart" width="400" height="400"></canvas>-->
-                </div>
     </main>
 
 
 
     <script>
+        var dataSet = [];
+
+        var currentState = {
+            currValue: 2,
+            prevValue: 0
+        }
+        rivets.bind(
+            document.querySelector('#calculator'), // bind to the element with id "candy-shop"
+            currentState
+        );
         (function(d3) {
 
-            var toggleColor = (function() {
-                var currentColor = "grey";
+            var dialOptions = {
+                isRange: true
+            };
 
-                return function() {
+            function setData(numItems) {
 
-                    currentColor = currentColor == "grey" ? "magenta" : "grey";
-                    d3.select(this).style("fill", currentColor);
-                }
-            })();
-            setTimeout(function() {
-                var range = 52;
-                var size = 240 / 12
-                var dataset = [];
-                for (var i = 0; i < range; i++) {
-                    dataset.push({
-                        label: 'grey',
+                var datum = []
+                var size = 240 / numItems;
+
+                console.log('numItems', numItems)
+
+                for (var i = 0; i < numItems; i++) {
+                    datum.push({
+                        fill: 'grey',
                         count: size,
-                        itemNumber: i + 1
+                        value: i + 1,
+                        class: 'value-segment',
+                        isSelected: false,
+                        isValue: true
                     });
-                    if (i < range - 1) {
-                        dataset.push({
-                            label: 'white',
-                            count: size / 2,
-                            isSegmentGap: true
-                        })
-                    }
-
                 }
 
+                return datum;
+            }
+
+
+            setTimeout(function() {
+
+                dataSet = setData(52);
 
                 var width = 395;
                 var height = 395;
                 var radius = Math.min(width, height) / 2;
                 var donutWidth = 75; // NEW
                 var color = d3.scaleOrdinal(d3.schemeCategory20b);
-                var svg = d3.select('.rs-inner-container')
+
+                var svg = d3.select('#chart')
                     .append('svg')
                     .attr('width', width)
                     .attr('height', height)
                     .attr('id', 'circle-segments')
                     .append('g')
-                    .attr('transform', 'translate(' + (width / 2) +
-                        ',' + (height / 2) + ')');
+                    .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
                 var arc = d3.arc()
                     .innerRadius(radius - donutWidth) // UPDATED
-                    .outerRadius(radius);
+                    .outerRadius(radius)
 
 
                 var startAngle = -130;
                 var endAngle = startAngle + 260;
 
                 var pie = d3.pie()
+                    // .padAngle(0.01)
                     .value(function(d) {
                         return d.count;
                     })
                     .startAngle(startAngle * (Math.PI / 180))
                     .endAngle(endAngle * (Math.PI / 180))
                     .sort(null);
+
                 var path = svg.selectAll('path')
-                    .data(pie(dataset))
+                    .data(pie(dataSet))
                     .enter()
                     .append('path')
                     .attr("data-item-number", function(d) {
-
                         return d.data.itemNumber;
                     })
                     .attr('d', arc)
-                    .attr('class', 'pie-segment')
+                    .attr('class', function(d, i) {
+                        return 'pie-segment ' + d.data.class
+                    })
+                    .attr('stroke', '#fff')
+                    .attr('stroke-width', function(d, i) {
+                        return d.data.count
+                    })
                     .attr('fill', function(d, i) {
-                        return d.data.label;
-                    }).on('click', toggleColor);
-
-                // $(".pie-segment").on("click", function(e) {
-                //     var $clicked = $(e.currentTarget)
-                //     console.log($clicked.data())
-                // });
+                        return d.data.fill;
+                    }).on('click', function(d, i) {
+                        setValue(this, d, i)
+                    }).each(function(d, i) {
+                        if (i === currentState.currValue) {
+                            fillSegments(this, i)
+                        }
+                    });
             }, 0)
 
-            'use strict';
+            var setValue = function(element, data, value) {
+                // var data = d.data;
+                toggleSelected(element, data, value)
+            }
+
+            // Fills segments based on selected value
+            function fillSegments(element, value) {
+
+                if (dialOptions.isRange) {
+                    _fillRange(element, value)
+                } else {
+                    _selectSingleSegment(element, value);
+                }
+            }
+
+            function _selectSingleSegment(element, value) {
+                var allSegments = element.parentNode.childNodes;
+                allSegments.forEach(function(el) {
+                    el.classList.remove('selected')
+                });
+                element.classList.add('selected');
+            }
+
+            function _fillRange(element, value) {
+                console.log(value)
+                var allSegments = element.parentNode.childNodes;
+                var numSegments = allSegments.length;
+                var dir = 'increase';
+                if (value < currentState.currValue) {
+                    dir = 'decrease';
+                }
+
+                if (dir === 'increase') {
+                    var index = 0;
+                    for (var i = 0; i < numSegments; i++) {
+                        setTimeout(function() {
+                            if (index < value) {
+                                allSegments[index].classList.add('selected');
+                            } else {
+                                allSegments[index].classList.remove('selected');
+                            }
+                            ++index;
+                        }, i * (numSegments / 25));
+                    }
+                } else {
+                    var index = currentState.currValue - 1;
+                    for (var i = currentState.currValue; i > value; i--) {
+                        setTimeout(function() {
+                            allSegments[index].classList.remove('selected');
+                            --index;
+                        }, i * (numSegments / 25));
+                    }
+                }
+            }
+
+            function toggleSelected(element, data, value) {
+                fillSegments(element, value)
+                currentState.currValue = value;
+                data.isSelected = !data.isSelected;
+            }
 
         })(window.d3);
     </script>

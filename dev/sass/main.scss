@@ -201,90 +201,100 @@
     /// @param {Length} $circle-size - Container size
     /// @param {Length} $item-size - Item size
     /// @param {String | false} $class-for-IE - Base class name for old IE
-    @mixin distribute-on-circle( $nb-items, $circle-size, $item-size, $class-for-IE: false) {
-        $half-item: ($item-size / 2);
-        $half-parent: ($circle-size / 2);
-        position: absolute;
-        /* 1 */
-        left: 50%;
-        margin-left: -$circle-size/2;
-        width: $circle-size;
-        height: $circle-size;
-        padding: 0;
-        border-radius: 50%;
-        list-style: none;
-        /* 2 */
-        box-sizing: content-box;
-        /* 3 */
-        >* {
-            /* 4 */
-            display: block;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: $item-size;
-            height: $item-size;
-            margin: -$half-item;
-        }
-        $angle: (260 / $nb-items);
-        $rot: 158;
-        @for $i from 1 through $nb-items {
-            @if not $class-for-IE {
-                > :nth-of-type(#{$i}) {
-                    transform: rotate($rot * 1deg) translate($half-parent) rotate(90deg);
-                }
-            }
-            @else {
-                >.#{$class-for-IE}#{$i} {
-                    // If CSS transforms are not supported
-                    $mt: sin($rot * pi() / 180) * $half-parent - $half-item;
-                    $ml: cos($rot * pi() / 180) * $half-parent - $half-item;
-                    margin: $mt 0 0 $ml;
-                }
-            }
-            $rot: ($rot + $angle);
-        }
-    }
-    
-    .circle-container {
-        @include distribute-on-circle(12, 372px, 60px, false);
-        // margin: 5em auto 0;
-        // border: solid 5px tomato;
-        z-index: 998;
-        transform: rotate(1deg);
-    }
-    
-    .circle-container .item {
-        display: block;
-        background: yellow;
-        height: 60px;
-        width: 60px;
-        border-radius: 0;
-        filter: grayscale(100%);
-        z-index: 9999;
-        &:hover {
-            filter: grayscale(0);
-        }
-    }
-    
-    .rs-handle {
-        display: none;
-    }
-    
-    .rs-segment-wrap {
-        background: red;
-        display: block;
-        line-height: 50px;
-        text-align: center;
-        position: absolute;
-        z-index: 999;
-    }
-    
+    // @mixin distribute-on-circle( $nb-items, $circle-size, $item-size, $class-for-IE: false) {
+    //     $half-item: ($item-size / 2);
+    //     $half-parent: ($circle-size / 2);
+    //     position: absolute;
+    //     /* 1 */
+    //     left: 50%;
+    //     margin-left: -$circle-size/2;
+    //     width: $circle-size;
+    //     height: $circle-size;
+    //     padding: 0;
+    //     border-radius: 50%;
+    //     list-style: none;
+    //     /* 2 */
+    //     box-sizing: content-box;
+    //     /* 3 */
+    //     >* {
+    //         /* 4 */
+    //         display: block;
+    //         position: absolute;
+    //         top: 50%;
+    //         left: 50%;
+    //         width: $item-size;
+    //         height: $item-size;
+    //         margin: -$half-item;
+    //     }
+    //     $angle: (260 / $nb-items);
+    //     $rot: 158;
+    //     @for $i from 1 through $nb-items {
+    //         @if not $class-for-IE {
+    //             > :nth-of-type(#{$i}) {
+    //                 transform: rotate($rot * 1deg) translate($half-parent) rotate(90deg);
+    //             }
+    //         }
+    //         @else {
+    //             >.#{$class-for-IE}#{$i} {
+    //                 // If CSS transforms are not supported
+    //                 $mt: sin($rot * pi() / 180) * $half-parent - $half-item;
+    //                 $ml: cos($rot * pi() / 180) * $half-parent - $half-item;
+    //                 margin: $mt 0 0 $ml;
+    //             }
+    //         }
+    //         $rot: ($rot + $angle);
+    //     }
+    // }
+    // .circle-container {
+    //     @include distribute-on-circle(12, 372px, 60px, false);
+    //     // margin: 5em auto 0;
+    //     // border: solid 5px tomato;
+    //     z-index: 998;
+    //     transform: rotate(1deg);
+    // }
+    // .circle-container .item {
+    //     display: block;
+    //     background: yellow;
+    //     height: 60px;
+    //     width: 60px;
+    //     border-radius: 0;
+    //     filter: grayscale(100%);
+    //     z-index: 9999;
+    //     &:hover {
+    //         filter: grayscale(0);
+    //     }
+    // }
+    // .rs-handle {
+    //     display: none;
+    // }
+    // .rs-segment-wrap {
+    //     background: red;
+    //     display: block;
+    //     line-height: 50px;
+    //     text-align: center;
+    //     position: absolute;
+    //     z-index: 999;
+    // }
+    // #circle-segments {
+    //     position: relative;
+    //     z-index: 999;
+    //     left: 50%;
+    //     top: 50%;
+    //     margin-left: -198px;
+    //     margin-top: -198px;
+    // }
     #circle-segments {
-        position: relative;
-        z-index: 999;
-        left: 50%;
-        top: 50%;
-        margin-left: -198px;
-        margin-top: -198px;
+        background: white;
+        .pie-segment {
+            -webkit-transition: all .25s;
+            transition: all .25s;
+            fill: #fff;
+            &.value-segment {
+                cursor: pointer;
+                fill: #999;
+                &.selected {
+                    fill: green
+                }
+            }
+        }
     }

@@ -1,0 +1,50 @@
+{
+  "name": "round-slider",
+  "homepage": "http://roundsliderui.com/",
+  "authors": [
+    "Soundar"
+  ],
+  "main": [
+    "dist/roundslider.min.js",
+    "dist/roundslider.min.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soundar24/roundSlider.git"
+  },
+  "license": "MIT",
+  "description": "roundSlider - A free jQuery plugin",
+  "dependencies": {
+    "jquery": ">= 1.4.1"
+  },
+  "keywords": [
+    "roundslider",
+    "round slider",
+    "circular slider",
+    "radial slider",
+    "range slider",
+    "half circle slider",
+    "quarter slider",
+    "pie slider",
+    "knob slider",
+    "jquery plugin"
+  ],
+  "ignore": [
+    "demo",
+    "images",
+    ".bowerrc",
+    ".gitignore",
+    "bower.json",
+    "package.json",
+    "README.md"
+  ],
+  "_release": "64dec424db",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "64dec424db60cdff9a86179163efaeb506690da2"
+  },
+  "_source": "https://github.com/soundar24/roundSlider.git",
+  "_target": "*",
+  "_originalSource": "round-slider"
+}

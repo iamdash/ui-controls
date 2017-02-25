@@ -24,6 +24,6 @@
     fill: #fff; }
     #circle-segments .pie-segment.value-segment {
       cursor: pointer;
-      fill: #999; }
+      fill: #eee; }
       #circle-segments .pie-segment.value-segment.selected {
         fill: green; }

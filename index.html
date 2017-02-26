@@ -13,20 +13,7 @@
     <!-- inject:css -->
     <!-- endinject -->
 
-    <!-- build:js -->
-    <!-- bower:js -->
-    <script src="app/components/jquery/jquery.js"></script>
-    <script src="app/components/sightglass/index.js"></script>
-    <script src="app/components/rivets/dist/rivets.js"></script>
 
-    <script src="app/components/underscore/underscore.js"></script>
-    <script src="app/components/round-slider/dist/roundslider.min.js"></script>
-    <script src="app/components/chart.js/dist/Chart.js"></script>
-    <script src="app/components/d3/d3.js"></script>
-    <!-- endbower -->
-    <!-- inject:js -->
-    <!-- endinject -->
-    <!-- endbuild -->
 
     <!--<script src="app/js/lib/calculator.js"></script>-->
 
@@ -37,177 +24,26 @@
 
     <main class="demo-main">
         <div id="calculator">
-            <div id="chart"></div>
+            <div id="dial"></div>
             <input type=text rv-value="currValue" />
         </div>
 
     </main>
+    <!-- build:js -->
+    <!-- bower:js -->
+    <script src="app/components/jquery/jquery.js"></script>
+    <script src="app/components/sightglass/index.js"></script>
+    <script src="app/components/rivets/dist/rivets.js"></script>
 
-
-
-    <script>
-        var dataSet = [];
-
-        var currentState = {
-            currValue: 2,
-            prevValue: 0
-        }
-        rivets.bind(
-            document.querySelector('#calculator'), // bind to the element with id "candy-shop"
-            currentState
-        );
-        (function(d3) {
-
-            var dialOptions = {
-                isRange: true
-            };
-
-            function setData(numItems) {
-
-                var datum = []
-                var size = 240 / numItems;
-
-                console.log('numItems', numItems)
-
-                for (var i = 0; i < numItems; i++) {
-                    datum.push({
-                        fill: 'grey',
-                        count: size,
-                        value: i + 1,
-                        class: 'value-segment',
-                        isSelected: false,
-                        isValue: true
-                    });
-                }
-
-                return datum;
-            }
-
-
-            setTimeout(function() {
-
-                dataSet = setData(10);
-
-                var width = 395;
-                var height = 395;
-                var radius = Math.min(width, height) / 2;
-                var donutWidth = 25; // NEW
-                var color = d3.scaleOrdinal(d3.schemeCategory20b);
-
-                var svg = d3.select('#chart')
-                    .append('svg')
-                    .attr('width', width)
-                    .attr('height', height)
-                    .attr('id', 'circle-segments')
-                    .append('g')
-                    .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
-
-                var arc = d3.arc()
-                    .innerRadius(radius - donutWidth) // UPDATED
-                    .outerRadius(radius)
-
-
-                var startAngle = -130;
-                var endAngle = startAngle + 260;
-
-                var pie = d3.pie()
-                    .padAngle(0.03)
-                    .value(function(d) {
-                        return d.count;
-                    })
-                    .startAngle(startAngle * (Math.PI / 180))
-                    .endAngle(endAngle * (Math.PI / 180))
-                    .sort(null);
-
-                var path = svg.selectAll('path')
-                    .data(pie(dataSet))
-                    .enter()
-                    .append('path')
-                    .attr("data-item-number", function(d) {
-                        return d.data.itemNumber;
-                    })
-                    .attr('d', arc)
-                    .attr('class', function(d, i) {
-                        return 'pie-segment ' + d.data.class
-                    })
-                    // .attr('stroke', '#fff')
-                    // .attr('stroke-width', function(d, i) {
-                    //     return d.data.count
-                    // })
-                    .attr('fill', function(d, i) {
-                        return d.data.fill;
-                    }).on('click', function(d, i) {
-                        setValue(this, d, i)
-                    }).each(function(d, i) {
-                        if (i === currentState.currValue) {
-                            fillSegments(this, i)
-                        }
-                    });
-            }, 0)
-
-            var setValue = function(element, data, value) {
-                // var data = d.data;
-                toggleSelected(element, data, value)
-            }
-
-            // Fills segments based on selected value
-            function fillSegments(element, value) {
-
-                if (dialOptions.isRange) {
-                    _fillRange(element, value)
-                } else {
-                    _selectSingleSegment(element, value);
-                }
-            }
-
-            function _selectSingleSegment(element, value) {
-                var allSegments = element.parentNode.childNodes;
-                allSegments.forEach(function(el) {
-                    el.classList.remove('selected')
-                });
-                element.classList.add('selected');
-            }
-
-            function _fillRange(element, value) {
-                console.log(value)
-                var allSegments = element.parentNode.childNodes;
-                var numSegments = allSegments.length;
-                var dir = 'increase';
-                if (value < currentState.currValue) {
-                    dir = 'decrease';
-                }
-
-                if (dir === 'increase') {
-                    var index = 0;
-                    for (var i = 0; i < numSegments; i++) {
-                        setTimeout(function() {
-                            if (index < value) {
-                                allSegments[index].classList.add('selected');
-                            } else {
-                                allSegments[index].classList.remove('selected');
-                            }
-                            ++index;
-                        }, i * (numSegments / 25));
-                    }
-                } else {
-                    var index = currentState.currValue - 1;
-                    for (var i = currentState.currValue; i > value; i--) {
-                        setTimeout(function() {
-                            allSegments[index].classList.remove('selected');
-                            --index;
-                        }, i * (numSegments / 25));
-                    }
-                }
-            }
-
-            function toggleSelected(element, data, value) {
-                fillSegments(element, value)
-                currentState.currValue = value;
-                data.isSelected = !data.isSelected;
-            }
-
-        })(window.d3);
-    </script>
+    <script src="app/components/underscore/underscore.js"></script>
+    <script src="app/components/round-slider/dist/roundslider.min.js"></script>
+    <script src="app/components/chart.js/dist/Chart.js"></script>
+    <script src="app/components/d3/d3.js"></script>
+    <script src="app/js/lib/d3-dial.js"></script>
+    <!-- endbower -->
+    <!-- inject:js -->
+    <!-- endinject -->
+    <!-- endbuild -->
 </body>
 
 </html>

@@ -1,29 +1,19 @@
-.rs-control {
-  background: #fff;
-  clip-path: circle(200px at center);
-  /* OLD VALUE example: circle(245px, 140px, 50px); */
-  /* Yep, even the new clip-path has deprecated stuff. */ }
-
-.inner-circle-clip {
-  background: #fff;
-  /* width: 300px; */
-  /* height: 300px; */
-  position: absolute;
-  z-index: 9999;
-  border-radius: 50%;
-  left: 52px;
-  top: 53px;
-  bottom: 53px;
-  right: 53px; }
-
-#circle-segments {
+.circle-segments {
   background: white; }
-  #circle-segments .pie-segment {
+  .circle-segments .pie-segment {
     -webkit-transition: all .25s;
     transition: all .25s;
     fill: #fff; }
-    #circle-segments .pie-segment.value-segment {
+    .circle-segments .pie-segment.value-segment {
       cursor: pointer;
-      fill: #eee; }
-      #circle-segments .pie-segment.value-segment.selected {
-        fill: green; }
+      fill: #999; }
+      .circle-segments .pie-segment.value-segment.selected {
+        fill: teal; }
+  .circle-segments .drag-arc {
+    fill: grey;
+    opacity: 0.5; }
+    .circle-segments .drag-arc.dragging {
+      opacity: 0.75; }
+  .circle-segments .second-tick {
+    stroke-width: 3;
+    fill: #000; }

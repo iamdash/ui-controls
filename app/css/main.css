@@ -17,3 +17,6 @@
   .circle-segments .second-tick {
     stroke-width: 3;
     fill: #000; }
+  .circle-segments #value-arc {
+    pointer-events: none;
+    z-index: 9999; }

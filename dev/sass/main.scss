@@ -23,4 +23,8 @@
             stroke-width: 3;
             fill: #000;
         }
+        #value-arc {
+            pointer-events: none;
+            z-index: 9999
+        }
     }

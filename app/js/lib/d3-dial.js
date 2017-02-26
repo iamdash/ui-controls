@@ -27,8 +27,9 @@ var DIAL = function(options) {
         range: 25,
         startAngle: 0,
         endAngle: 360,
-        domElement: '#dial',
-        numDegrees: 360
+        selector: '#dial',
+        numDegrees: 360,
+        piePadding: 0.01
     };
 
     this.options = _.extend({}, defaults, options);
@@ -60,7 +61,7 @@ var DIAL = function(options) {
 
         this.dataSet = this.setData();
 
-        var svg = d3.select(this.options.domElement)
+        var svg = d3.select(this.options.selector)
             .append('svg')
             .attr('width', this.options.width)
             .attr('height', this.options.height)
@@ -73,11 +74,8 @@ var DIAL = function(options) {
             .outerRadius(radius)
 
 
-
-
-
         var pie = d3.pie()
-            .padAngle(0.01)
+            .padAngle(this.options.piePadding)
             .value(function(d) {
                 return d.count;
             })
@@ -99,10 +97,12 @@ var DIAL = function(options) {
             .attr('fill', function(d, i) {
                 return d.data.fill;
             }).on('click', function(d, i) {
-                console.log(d)
+
                 _this.setValue(this, d, i)
 
-                _this.setArcEndAngle(_this.valueArc, (d.endAngle - 0.03) / (Math.PI / 180), _this.options.startAngle);
+                if (_this.options.type == 'drag-range') {
+                    _this.setArcEndAngle(_this.valueArc, (d.endAngle - _this.options.piePadding) / (Math.PI / 180), _this.options.startAngle);
+                }
 
             }).each(function(d, i) {
                 if (i === currentState.currValue) {
@@ -131,7 +131,7 @@ var DIAL = function(options) {
             function dragged(d) {
                 var xy = d3.mouse(svg.node());
                 var radians = Math.atan2(xy[0], -xy[1]);
-                console.log(valueArc)
+
                 valueArc
                     .startAngle(radians)
                     .endAngle(radians);
@@ -153,6 +153,8 @@ var DIAL = function(options) {
                 })
                 .style("fill", "orange")
                 .attr('id', 'value-arc')
+                .attr('stroke', 'orange')
+                .attr('stroke-width', 4 - this.options.piePadding)
                 .attr("d", this.arc)
                 .each(function(d) { this._current = d; });
 
@@ -239,7 +241,7 @@ var DIAL = function(options) {
         endAngle = endAngle * (Math.PI / 180);
 
         arc.transition()
-            .duration(1000)
+            .duration(250)
             .attrTween("d", arcTween(endAngle));
     }
 
@@ -302,6 +304,30 @@ $(document).ready(function() {
         type: 'drag-range',
         startAngle: -130,
         numDegrees: 260,
-        range: 200
+        range: 52,
+        selector: '#dial1',
+        height: 150,
+        width: 150
     });
+
+    var dial2 = new DIAL({
+        type: 'range-select',
+        startAngle: -130,
+        numDegrees: 260,
+        range: 10,
+        selector: '#dial2',
+        height: 150,
+        width: 150
+    });
+
+    var dial3 = new DIAL({
+        type: 'single-select',
+        startAngle: -130,
+        numDegrees: 260,
+        range: 12,
+        selector: '#dial3',
+        height: 150,
+        width: 150
+    });
+
 })

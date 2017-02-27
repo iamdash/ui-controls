@@ -104,6 +104,8 @@ var DIAL = function(options) {
                     _this.setArcEndAngle(_this.valueArc, (d.endAngle - _this.options.piePadding) / (Math.PI / 180), _this.options.startAngle);
                 }
 
+            }).on("mouseover", function(d) {
+                console.log(d)
             }).each(function(d, i) {
                 if (i === currentState.currValue) {
                     if (_this.options.type !== 'drag-range') {
@@ -129,20 +131,60 @@ var DIAL = function(options) {
             var d;
 
             function dragged(d) {
-                var xy = d3.mouse(svg.node());
-                var radians = Math.atan2(xy[0], -xy[1]);
+                var halfDW = _this.options.donutWidth;
+                d3.event.sourceEvent.stopPropagation();
+                d_from_origin = Math.sqrt(Math.pow(d3.event.x, 2) + Math.pow(d3.event.y, 2));
 
-                valueArc
-                    .startAngle(radians)
-                    .endAngle(radians);
+                var cx = d3.select(this).attr('cx');
+                var cy = d3.select(this).attr('cy');
+
+                var ex = d3.event.x;
+                var ey = d3.event.y;
+
+                var _angle = angle360(cx, cy, ex, ey)
+                console.log(_angle)
+
+                alpha = Math.acos(d3.event.x / d_from_origin);
+
+                // console.log(Math.abs(Math.atan(d3.event.x / d3.event.y)), Math.abs(alpha))
+                var _atanXY = Math.atan(d3.event.x / d3.event.y)
+                var _newAngle = _angle < 180 ? _atanXY : -_angle;
+
+                // console.log(_atanXY)
+
+                // arcTween(_angle * (Math.PI / 180))
+                _this.valueArc.transition()
+                    .duration(0)
+                    .attrTween("d", arcTween(-_atanXY));
+
+                d3.select(this)
+                    .attr("cx", d.x = (radius - (halfDW / 2)) * Math.cos(alpha))
+                    .attr("cy", d.y = d3.event.y < 0 ? -(radius - (halfDW / 2)) * Math.sin(alpha) : (radius - (halfDW / 2)) * Math.sin(alpha));
+
             }
 
             function dragended(d, i) {
-                console.log(this)
                 d3.select(this).classed('dragging', false);
             }
 
+            function angle(cx, cy, ex, ey) {
+                var dy = ey - cy;
+                var dx = ex - cx;
+                var theta = Math.atan2(dy, dx); // range (-PI, PI]
+                theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
 
+                return theta;
+            }
+
+            function angle360(cx, cy, ex, ey) {
+                var theta = angle(cx, cy, ex, ey); // range (-180, 180]
+                if (theta < 0) theta = 360 + theta; // range [0, 360)
+                return theta;
+            }
+
+            ////////////////////////////////////////////
+            // ARC START
+            ////////////////////////////////////////////
             this.arc = d3.arc()
                 .innerRadius(radius - this.options.donutWidth + 2)
                 .outerRadius(radius - 2)
@@ -160,10 +202,52 @@ var DIAL = function(options) {
 
             _this.setArcEndAngle(this.valueArc, _this.options.endAngle - 100, _this.options.startAngle);
 
-            // _this.fillSegments(null, currentState.currValue, { startAngle: this.options.startAngle + 1 })
+            ////////////////////////////////////////////
+            // ARC END
+            ////////////////////////////////////////////
+
+            ////////////////////////////////////////////
+            // HANDLE START
+            ////////////////////////////////////////////
+
+            this.handleArc = svg.append('circle')
+                .attr('r', radius - this.options.donutWidth)
+                .attr('stroke', 'black')
+                .attr('strokeWidth', 20)
+                .attr('fill', 'none')
+                .attr('class', 'circumference');
+
+            this.handleData = [{
+                x: 0,
+                y: -radius + (_this.options.donutWidth / 2)
+            }];
+            console.log(this.handleData)
+            this.handle = svg.append("g")
+                .attr("class", "dot")
+                .selectAll('circle')
+                .data(this.handleData)
+                .enter().append("circle")
+                .attr("r", this.options.donutWidth / 2)
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; })
+                .call(drag);
+
+
+
+
+
+
+            ////////////////////////////////////////////
+            // HANDLE END
+            ////////////////////////////////////////////
+
 
         }
 
+    }
+
+    this.getHandleOffset = function() {
+        return radius + (_this.options.donutWidth / 2)
     }
 
     this.setValue = function(element, data, value) {
@@ -240,6 +324,8 @@ var DIAL = function(options) {
 
         endAngle = endAngle * (Math.PI / 180);
 
+        console.log('endAngle is', endAngle)
+
         arc.transition()
             .duration(250)
             .attrTween("d", arcTween(endAngle));
@@ -306,8 +392,8 @@ $(document).ready(function() {
         numDegrees: 260,
         range: 52,
         selector: '#dial1',
-        height: 150,
-        width: 150
+        height: 400,
+        width: 400
     });
 
     var dial2 = new DIAL({
